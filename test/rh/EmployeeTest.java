@@ -32,9 +32,11 @@ class EmployeeTest {
 	
 	@Test
 	public void createEmployeeShouldNotInitializeAnnualSalaryIfAnnualSalaryExceedsMaxAnnualSalary() {
+		//Arrange
+		int excessSalary = 100001;
 
 		assertThrows(IllegalInitializeAnnualSalaryException.class,
-		() -> new Employee(NEW_NAME, NEW_SALARY + 1));  	 //DONE? chiffre magique
+		() -> new Employee(NEW_NAME, excessSalary));  	 //DONE? chiffre magique
 	}
 	
 	@Test
