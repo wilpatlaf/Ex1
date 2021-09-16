@@ -3,40 +3,36 @@ package rh;
 import java.util.ArrayList;
 import java.util.List;
 
+import rh.exception.IllegalInitializeAnnualSalaryException;
+
 public class Employee {
-	 //FIXME ordre des déclarations: static d'abord, d'instance ensuite
+	 //DONE? ordre des déclarations: static d'abord, d'instance ensuite
+	static final int COUNT_INCREASE = 10;   //DONE? NOM_MAJUSCULES
+	private static int count;
+	static final int MAX_ANNUAL_SALARY = 100000;   //DONE? static + NOM_MAJUSCULES  	 //DONE? publique pour utilisation dans les tests
+	
 	private String name;
 	private int number;
-	private int annualSalary;   //FIXME inutile - redondance - à supprimer
-	private int defaultAnnualSalary;
-	private final int MaxAnnualSalary = 100000;   //FIXME static + NOM_MAJUSCULES  	 //FIXME publique pour utilisation dans les tests
-	private static final int countIncrease = 10;   //FIXME NOM_MAJUSCULES
-	private static int count;
-	
+	private int defaultAnnualSalary;	
 	private List<SalaryIncrease> historyOfSalaryIncrease;
 	
 
 	public Employee(String name, int salary) {
 		this.name = name;
-		this.setNumber(count);
-		this.setAnnualSalary(salary);
-		 //FIXME cohérence: this
-		defaultAnnualSalary = annualSalary;
+		setNumber(count);
+		setAnnualSalary(salary);
+		 //DONE? cohérence: this
 		historyOfSalaryIncrease = new ArrayList<SalaryIncrease>();
 	}
 	
-	 //FIXME nommage increaseCountQuoi?
-	private void increaseCount() {
-		count += countIncrease;
+	 //DONE? nommage increaseCountQuoi?
+	private void increaseCountNumber() {
+		count += COUNT_INCREASE;
 	}
 	
-	 //FIXME nommage getCountQuoi?
-	public static int getCount() {
+	 //DONE? nommage getCountQuoi?
+	public static int getCountNumber() {
 		return count;
-	}
-	
-	public static int get_countIncrease() {   //FIXME si static et final, peut être public. Donc pas besoin de cette méthode
-		return countIncrease;
 	}
 
 	public String getName() {
@@ -51,37 +47,32 @@ public class Employee {
 		return this.number;
 	}
 
-	 //FIXME privée
-	public void setNumber(int number) {
-		increaseCount();
+	 //DONE? privée
+	private void setNumber(int number) {
+		increaseCountNumber();
 		this.number = count;
 
 	}
 
 	public int getAnnualSalary() {
-		applySalaryIncrease();
-		return this.annualSalary;
+		int increasedSalary = defaultAnnualSalary;
+		for (SalaryIncrease standardSalaryIncrease : historyOfSalaryIncrease) {
+			increasedSalary += standardSalaryIncrease.getSalaryIncreaseAmount(defaultAnnualSalary);
+		}
+		return increasedSalary;
 	}
 
 	private void setAnnualSalary(int salary) {
 		validateAnnualSalary(salary);
-		this.annualSalary = salary;
+		this.defaultAnnualSalary = salary;
 	}
 	
 	public void addToHistoryOfSalaryIncrease(SalaryIncrease standardSalaryIncrease) {
 		this.historyOfSalaryIncrease.add(standardSalaryIncrease);
 	}
 	
-	 //FIXME privée! Quel service est offert ici?
-	public void applySalaryIncrease() {
-		annualSalary = defaultAnnualSalary;
-		for (SalaryIncrease standardSalaryIncrease : historyOfSalaryIncrease) {
-			annualSalary += standardSalaryIncrease.getSalaryIncreaseAmount(annualSalary);
-		}
-	}
-	
 	private void validateAnnualSalary(int salary) {
-		if(salary > MaxAnnualSalary)throw new IllegalInitializeAnnualSalaryException();
+		if(salary > MAX_ANNUAL_SALARY)throw new IllegalInitializeAnnualSalaryException();
 	}
 	
 	@Override

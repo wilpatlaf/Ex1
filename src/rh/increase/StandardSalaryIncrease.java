@@ -1,11 +1,12 @@
 package rh.increase;
 
-import rh.IllegalExceedMaxSalaryIncrease;
 import rh.SalaryIncrease;
+import rh.exception.IllegalMaxSalaryIncreasePercentageException;
 
 public class StandardSalaryIncrease implements SalaryIncrease {
+	static final float MAX_SALARY_INCREASE_PERCENTAGE = 0.15f;
 	private float salaryIncreasePercentage;
-	private final float maxSalaryIncreasePercentage = 0.15f;
+
 	
 	public StandardSalaryIncrease(float salaryIncreasePercentage) {
 		validateSalaryIncreasePercentage(salaryIncreasePercentage);
@@ -18,7 +19,7 @@ public class StandardSalaryIncrease implements SalaryIncrease {
 	}	
 	
 	private void validateSalaryIncreasePercentage(float salaryIncreasePercentage) {
-		if(salaryIncreasePercentage > maxSalaryIncreasePercentage)throw new IllegalExceedMaxSalaryIncrease();
+		if(salaryIncreasePercentage > MAX_SALARY_INCREASE_PERCENTAGE)throw new IllegalMaxSalaryIncreasePercentageException();
 	}
 	
 	

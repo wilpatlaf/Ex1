@@ -1,8 +1,8 @@
 package rh.sort;
 
-import.java.util.Comparator;
+import java.util.Comparator;
 
-import.rh.Employee;
+import rh.Employee;
 
 
 public class SortingByNumberComparator implements Comparator<Employee>{

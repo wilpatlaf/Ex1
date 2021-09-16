@@ -45,7 +45,7 @@ public class Simulator {
 		this.ListOfEmployee.add(new Employee("Lisa", 23000));
 		this.ListOfEmployee.add(new Employee("Amber", 15000));
 		
-		this.ListOfEmployee.add(employee2);
+		this.ListOfEmployee.add(employee1);
 		
 		this.ListOfEmployee.add(new Employee("Nemu", 52000));
 		
@@ -62,7 +62,6 @@ public class Simulator {
 				increase = new GradualSalaryIncrease(.1f);
 			}
 			employee.addToHistoryOfSalaryIncrease(increase);
-			employee.applySalaryIncrease();
 			counter++;
 		}
 	}

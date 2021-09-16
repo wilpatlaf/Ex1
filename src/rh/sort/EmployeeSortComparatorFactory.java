@@ -5,7 +5,7 @@ import java.util.Comparator;
 import rh.Employee;
 
 public class EmployeeSortComparatorFactory {
-	
+	/*
 	public enum ComparatorType{
 		BY_NAME, BY_SALARY, BY_NUMBER
 	}
@@ -23,5 +23,5 @@ public class EmployeeSortComparatorFactory {
 		break;
 		}
 		return sortComparator;
-	}
+	}*/
 }

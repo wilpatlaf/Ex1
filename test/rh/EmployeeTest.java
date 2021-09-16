@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import rh.exception.IllegalInitializeAnnualSalaryException;
+
 class EmployeeTest {
 	private final static String NEW_NAME = "Bob";
 	private final static int NEW_SALARY = 100000;
@@ -27,13 +29,13 @@ class EmployeeTest {
 	@Test
 	public void createEmployeeShouldInitializeNumber() {
 		//Assert
-		assertEquals(Employee.getCount(), anEmployee.getNumber());
+		assertEquals(Employee.getCountNumber(), anEmployee.getNumber());
 	}
 	
 	@Test
 	public void createEmployeeShouldNotInitializeAnnualSalaryIfAnnualSalaryExceedsMaxAnnualSalary() {
 		//Arrange
-		int excessSalary = 100001;
+		int excessSalary = Employee.MAX_ANNUAL_SALARY + 1;
 
 		assertThrows(IllegalInitializeAnnualSalaryException.class,
 		() -> new Employee(NEW_NAME, excessSalary));  	 //DONE? chiffre magique
@@ -45,31 +47,32 @@ class EmployeeTest {
 		Employee Employee1 = new Employee(NEW_NAME, NEW_SALARY);
 		Employee Employee2 = new Employee(NEW_NAME, NEW_SALARY);
 		//Assert
-		assertEquals(Employee1.getNumber(), Employee2.getNumber() - Employee.get_countIncrease());
+		assertEquals(Employee1.getNumber(), Employee2.getNumber() - Employee.COUNT_INCREASE);
 	}
 	
 	@Test
 	public void canApplySalaryIncrease1() {
 		//Arrange
-		
+		int expectedSalaryIncrease = NEW_SALARY + 1000;
 		//Act
 		SalaryIncreaseMock salaryIncrease = new SalaryIncreaseMock();
 		anEmployee.addToHistoryOfSalaryIncrease(salaryIncrease);
-		anEmployee.applySalaryIncrease();
 		//Assert
-		assertEquals(anEmployee.getAnnualSalary(), 101000);  	 //FIXME calcul magique Utiliser 
+		assertEquals(expectedSalaryIncrease, anEmployee.getAnnualSalary());  	 //DONE? calcul magique Utiliser 
 	}
 	
 	@Test
 	public void canApplySalaryIncrease2() {
 		//Arrange
-		//Act
-		//FIXME utiliser un Fake pour le mock sinon code mal testé si toujours même salary increase amount
 		SalaryIncreaseMock salaryIncrease = new SalaryIncreaseMock();
+		int expectedAnnualSalary = (int) (NEW_SALARY + (salaryIncrease.getSalaryIncreaseAmount(NEW_SALARY) * 2));
+		//Act
+		//DONE? utiliser un Fake pour le mock sinon code mal testé si toujours même salary increase amount
+
 		anEmployee.addToHistoryOfSalaryIncrease(salaryIncrease);
 		anEmployee.addToHistoryOfSalaryIncrease(salaryIncrease);	
 		//Assert
-		assertEquals(anEmployee.getAnnualSalary(), 102000);  	 //FIXME calcul magique Utiliser salaryIncrease du mock
+		assertEquals(expectedAnnualSalary, anEmployee.getAnnualSalary());  	 //DONE? calcul magique Utiliser salaryIncrease du mock
 	}
 	
 	@Test

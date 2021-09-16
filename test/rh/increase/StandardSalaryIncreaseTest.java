@@ -4,8 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.Assert.assertThrows;
 
 import org.junit.jupiter.api.Test;
-
-import rh.IllegalExceedMaxSalaryIncrease;
+import rh.exception.IllegalMaxSalaryIncreasePercentageException;
 
 class StandardSalaryIncreaseTest {
 	
@@ -25,8 +24,11 @@ class StandardSalaryIncreaseTest {
 	
 	@Test
 	public void cantExceedMaxStandardSalaryIncrease() {
-		assertThrows(IllegalExceedMaxSalaryIncrease.class,
-		() -> new StandardSalaryIncrease(0.16f));
+		//Arrange
+		float maxGradualSalaryIncreaseExcess = StandardSalaryIncrease.MAX_SALARY_INCREASE_PERCENTAGE + 0.01f;
+		
+		assertThrows(IllegalMaxSalaryIncreasePercentageException.class,
+		() -> new StandardSalaryIncrease(maxGradualSalaryIncreaseExcess));
 	}
 
 	@Test
@@ -34,10 +36,11 @@ class StandardSalaryIncreaseTest {
 		//Arrange
 		float SALARY_INCREASE_PERCENTAGE = 0.1f;
 		StandardSalaryIncrease salaryIncrease = new StandardSalaryIncrease(SALARY_INCREASE_PERCENTAGE);
+		int expectedIncreasedSalary = (int) (NEW_SALARY + (NEW_SALARY * SALARY_INCREASE_PERCENTAGE));
 		//Act
 		float increasedSalary = NEW_SALARY + salaryIncrease.getSalaryIncreaseAmount(NEW_SALARY);
 		//Assert
-		assertEquals(increasedSalary, 55000);
+		assertEquals(expectedIncreasedSalary, increasedSalary);
 	}
 	
 	@Test
@@ -47,11 +50,13 @@ class StandardSalaryIncreaseTest {
 		float SALARY_INCREASE_PERCENTAGE2 = 0.15f;
 		StandardSalaryIncrease salaryIncrease1 = new StandardSalaryIncrease(SALARY_INCREASE_PERCENTAGE1);
 		StandardSalaryIncrease salaryIncrease2 = new StandardSalaryIncrease(SALARY_INCREASE_PERCENTAGE2);
+		float expectedIncreasedSalary = NEW_SALARY + (NEW_SALARY * SALARY_INCREASE_PERCENTAGE1); 
+		expectedIncreasedSalary += (expectedIncreasedSalary * SALARY_INCREASE_PERCENTAGE2);
 		//Act
 		float increasedSalary = NEW_SALARY + salaryIncrease1.getSalaryIncreaseAmount(NEW_SALARY);
 		increasedSalary += salaryIncrease2.getSalaryIncreaseAmount(increasedSalary);
 		//Assert
-		assertEquals(increasedSalary, 63250);
+		assertEquals(expectedIncreasedSalary, increasedSalary);
 	}
 
 }
